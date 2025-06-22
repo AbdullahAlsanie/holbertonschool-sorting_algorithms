@@ -68,6 +68,7 @@ void quick_sort_rec(int *array, int low, int high, size_t size)
 	if (low < high)
 	{
 		int pivot = lomuto_partition(array, low, high, size);
+
 		quick_sort_rec(array, low, pivot - 1, size);
 		quick_sort_rec(array, pivot + 1, high, size);
 	}
