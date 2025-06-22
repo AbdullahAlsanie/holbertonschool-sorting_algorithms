@@ -1,7 +1,7 @@
 #include "sort.h"
 
 /**
- * swap - Swaps two integers in an array
+ * swap - Swap two integers if they are not equal
  * @a: First integer
  * @b: Second integer
  */
@@ -16,11 +16,11 @@ void swap(int *a, int *b)
 }
 
 /**
- * lomuto_partition - Implements Lomuto partition scheme
- * @array: Array to partition
- * @low: Start index
- * @high: End index
- * @size: Array size (for printing)
+ * lomuto_partition - Lomuto partition scheme
+ * @array: The array
+ * @low: Starting index
+ * @high: Ending index (pivot index)
+ * @size: Array size (for print_array)
  * Return: Index of pivot after partition
  */
 int lomuto_partition(int *array, int low, int high, size_t size)
@@ -33,37 +33,48 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 		if (array[j] < pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
-			if (i != j)
+			if (i != j && array[i] != array[j])
+			{
+				swap(&array[i], &array[j]);
 				print_array(array, size);
+			}
+			else if (i != j)
+			{
+				swap(&array[i], &array[j]);
+			}
 		}
 	}
-	swap(&array[i + 1], &array[high]);
-	if ((i + 1) != high)
+	if ((i + 1) != high && array[i + 1] != array[high])
+	{
+		swap(&array[i + 1], &array[high]);
 		print_array(array, size);
+	}
+	else if ((i + 1) != high)
+	{
+		swap(&array[i + 1], &array[high]);
+	}
 	return (i + 1);
 }
 
 /**
- * quick_sort_rec - Recursively sorts array using Quick Sort
+ * quick_sort_rec - Recursive quick sort
  * @array: Array to sort
  * @low: Start index
  * @high: End index
- * @size: Array size (for printing)
+ * @size: Size of the array
  */
 void quick_sort_rec(int *array, int low, int high, size_t size)
 {
 	if (low < high)
 	{
-		int p = lomuto_partition(array, low, high, size);
-
-		quick_sort_rec(array, low, p - 1, size);
-		quick_sort_rec(array, p + 1, high, size);
+		int pivot = lomuto_partition(array, low, high, size);
+		quick_sort_rec(array, low, pivot - 1, size);
+		quick_sort_rec(array, pivot + 1, high, size);
 	}
 }
 
 /**
- * quick_sort - Sorts an array using the Quick sort algorithm
+ * quick_sort - Quick sort entry point
  * @array: Array to sort
  * @size: Size of the array
  */
